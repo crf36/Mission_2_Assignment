@@ -1,43 +1,13 @@
-﻿using System;
+﻿// Chris Fowler
+// Mission 2: Dice Rolling Simulator (Rolls two dice x number of times and displays results)
 
-public class DiceSimulator
+using System;
+using Mission_2_Assignment;
+
+public class Program
 {
-    private Random random;
-
-    public DiceSimulator()
-    {
-        random = new Random();
-    }
-
-    public void SimulateDiceRolls()
-    {
-        int numRolls = HowManyRolls();
-
-        Console.WriteLine("\nDICE ROLLING SIMULATION RESULTS");
-        Console.WriteLine("Each \"*\" + represents 1% of the total number of rolls.");
-        Console.WriteLine($"Total number of rolls = {numRolls}.\n");
-
-        // Uses an array to store the counts for dice roll number
-        int[] diceRollCounts = new int[11];
-
-        for (int i = 0; i < numRolls; i++)
-        {
-            int randomNumber = random.Next(2, 13);
-            // Adjusts the index to start at 0 (since we aren't doing 0 or 1)
-            diceRollCounts[randomNumber - 2]++; 
-        }
-
-        for (int number = 2; number <= 12; number++)
-        {
-            int count = diceRollCounts[number - 2];
-
-            Console.WriteLine($"{number}: {new string('*', count / (numRolls / 100))}");
-        }
-
-        Console.WriteLine("\nThank you for using the dice throwing simulator. Goodbye!");
-    }
-
-    private int HowManyRolls()
+    // Asks the user for a number of dice rolls to do and returns that number
+    internal int HowManyRolls()
     {
         Console.WriteLine("Welcome to the dice throwing simulator!\n");
         Console.Write("How many dice rolls would you like to simulate? ");
@@ -46,13 +16,24 @@ public class DiceSimulator
 
         return numRolls;
     }
-}
-
-public class Program
-{
     private static void Main(string[] args)
     {
+        // Creates an instance of our program class so we can run the HowManyRolls method
+        Program program = new Program();
+        int numRolls = program.HowManyRolls();
+
+        // Creates an instance of our DiceSimulator class so we can run the SimulateDiceRolls method
         DiceSimulator diceSimulator = new DiceSimulator();
-        diceSimulator.SimulateDiceRolls();
+        int[] diceRollCounts = diceSimulator.SimulateDiceRolls(numRolls);
+
+        // Loops through our list of dice rolls and counts and lists a * for each percent that number was rolled out of 100
+        for (int number = 2; number <= 12; number++)
+        {
+            int count = diceRollCounts[number - 2];
+
+            Console.WriteLine($"{number}: {new string('*', count / (numRolls / 100))}");
+        }
+
+        Console.WriteLine("\nThank you for using the dice throwing simulator. Goodbye!");
     }
 }
